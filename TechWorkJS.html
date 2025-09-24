@@ -1,0 +1,261 @@
+<html>
+<head>
+<title>Game</title>
+<style>
+	body{
+       display:flex;
+         justify-content:center;
+		align-items: center;
+
+	}
+
+.main{
+   text-align:center;	
+  width:80vh;
+  height:480px;
+  border:3px solid #555879;
+  border-radius:10px;
+  box-shadow:10px 10px 5px lightblue;
+  
+}
+
+h1{
+	color:#555879;
+	font-family: Arial;
+}
+.YourScore,
+.ComputerScore{
+    display:inline-block;
+    height:25%;
+    width:29%;
+    padding: 10px;
+	border:3px solid #555879;
+	margin:20px;
+	border-radius:10px;
+	background:#FFDBB6;
+	font-family:Arial;
+
+}
+#result{
+ font-size:19px;
+}
+#round{
+ font-size:18px;
+}
+
+.Buttons{
+	padding:10px;
+
+}
+
+#cS{
+ font-size:25px;
+ font-weight:bold;
+}
+
+#yS{
+font-size:25px;
+ font-weight:bold;
+}
+
+
+button{
+	background:#EBD9D1;
+	color:#555789;
+    padding:10px 15px 10px 15px;
+	margin:20px;
+	border: 3px solid #555879;
+	border-radius:10px;
+	cursor:pointer;
+	transition : background-color 0.3s ease;
+}
+
+button:hover{
+	background-color: #555879;
+	color:white;
+}
+
+#pAbutton{
+      position : absolute;
+
+}
+#playAgain{
+	position:relative;
+	margin-left:235px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="main">
+  <h1> Rock, Paper, Scissors</h1>
+  <div class="YourScore"> 
+    <h3>Your Score </h3>
+    <p id="yS">0</p>
+  </div>
+  <div class="ComputerScore">
+    <h3>Computer's Score</h3>
+    <p id="cS">0</p>
+  </div>
+  <p id="result"> Choose your weapon! </p>
+  <p id="round"> Round 1 of 3</p>
+
+ <div id="Buttons">
+  <button id="rock">Rock</button>
+  <button id="paper">Paper</button>
+  <button id="scissors">Scissors</button>
+ </div>
+ 
+ <div id = "pAbutton">
+ <button id="playAgain" style="display:none;">Play Again</button>
+</div>
+</div>
+<script>
+ let humanScore=0;
+ let computerScore=0;
+    
+      let resultText="";
+  let round=1;
+ 
+function getComputerChoice(){
+   /* number from 0 to 2*/
+   return Math.floor(Math.random()*3);
+}
+/*its not being called*/
+/*function gethumanChoice(){
+ 
+
+}*/
+
+ function playRound(humanChoice ,computerChoice){
+    
+   
+    let Comtext="";
+    let YourText="";
+    
+
+
+    
+
+/* set computer text */
+    if(computerChoice==0){
+   	  	Comtext = 'Rock' ;
+   	  }
+   	  else if(computerChoice==1){
+         Comtext = 'Paper';
+   	  }
+   	  else{
+   	  	Comtext = 'Scissors' ;
+   	  }
+
+   /* set your text */
+   	  if(humanChoice==0){
+         YourText= 'Rock'; 
+   	  }
+   	  else if(humanChoice==1){
+   	  	 YourText= 'Paper' ;
+   	  }
+   	  else{
+
+   	  	YourText='Scissors';
+   	  }
+
+
+   if(humanChoice == computerChoice)
+   {
+     /* there is  a tie */
+      resultText ="Its a tie";
+   }
+   else if((humanChoice==0 && computerChoice==1) || (humanChoice==1 && computerChoice==2) || (humanChoice==2 && computerChoice==0)){
+
+   	  
+     /*computer wins*/
+
+   	 resultText ="Computer Wins! " + Comtext + " beats " + YourText ;
+      computerScore++;
+      document.getElementById("cS").textContent = computerScore;
+   }
+   else {
+   	/* you win */
+   	  resultText ="You win! " + YourText + " beats " + Comtext  ;
+   	  humanScore++;
+      document.getElementById("yS").textContent = humanScore;
+   }
+
+     document.getElementById("result").textContent = resultText;
+    
+       round++;
+      document.getElementById("round").textContent="Round " + round + " of 3";
+
+ 
+    
+   if(round===4){
+   	
+   	 	 endGame();
+   }
+ }
+
+function endGame(){
+let resultMsg = "";
+
+ document.getElementById("Buttons").style.display="none";
+  document.getElementById("result").style.display= resultText;
+  document.getElementById("playAgain").style.display="block";
+  
+  if(humanScore < computerScore){
+ 
+    resultMsg= "Computer Wins the Game!";
+  }
+  else if(computerScore < humanScore){
+  	resultMsg = "You Wins the Game!";
+  }
+  else{
+  	resultMsg = "It's a Tie!";
+  }
+  document.getElementById("round").style.color="#FA812F";
+  document.getElementById("round").style.fontSize="25px";
+  document.getElementById("round").textContent = resultMsg;
+  
+
+}
+     
+
+ function playAgain(){
+
+
+  // Reset scores and round
+  round = 1;
+  humanScore = 0;
+  computerScore = 0;
+ 
+
+  // Reset UI
+  document.getElementById("yS").textContent = humanScore;
+  document.getElementById("cS").textContent = computerScore;
+  document.getElementById("Buttons").style.display = "block";
+  document.getElementById("playAgain").style.display = "none";
+  
+   document.getElementById("result").style.display = "block";
+document.getElementById("result").textContent = "Choose your weapon !";
+ document.getElementById("round").style.fontSize="";
+ document.getElementById("round").style.color="black";
+document.getElementById("round").textContent = "Round  1 of 3";
+  
+}
+
+
+
+    
+
+  //Entry point 
+    document.getElementById('rock').onclick= () =>playRound(0,getComputerChoice());
+  document.getElementById('paper').onclick= () => playRound(1,getComputerChoice());
+  document.getElementById('scissors').onclick= () => playRound(2,getComputerChoice());
+   document.getElementById("playAgain").onclick = () => playAgain();
+
+
+</script>
+</body>
+
+</html>
